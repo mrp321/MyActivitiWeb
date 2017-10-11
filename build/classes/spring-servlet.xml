@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd     
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!-- 自动扫描bean，把作了注解的类转换为bean -->
+	<context:component-scan base-package="cn.sitedev.controller" />
+	<context:component-scan base-package="cn.sitedev.service" />
+
+	<!-- JSP视图解析器 -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/WEB-INF/activiti/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+
+	<!-- html视图解析器 必须先配置freemarkerConfig,注意html是没有prefix前缀属性的 -->
+	<!-- <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer"> 
+		<property name="templateLoaderPath"> <value>/WEB-INF/activiti/</value> </property> 
+		</bean> <bean id="htmlviewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"> 
+		<property name="suffix" value=".html" /> <property name="order" value="0"></property> 
+		<property name="contentType" value="text/html;charset=UTF-8"></property> 
+		</bean> -->
+
+	<!-- 设置默认配置方案 -->
+	<!-- 使用Json后要加上这句,否则会报HttpMediaTypeNotAcceptableException错误 -->
+	<mvc:annotation-driven />
+
+	<!-- 隐式地向 Spring 容器注册 -->
+	<!-- 引入spring提供的注解解析器 -->
+	<context:annotation-config />
+
+	<!-- 使用默认的servlet来相应静态文件 -->
+	<mvc:default-servlet-handler />
+
+	<!-- 文件上传 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- one of the properties available; the maximum file size in bytes -->
+		<!-- 5M -->
+		<property name="defaultEncoding" value="utf-8" />
+		<property name="maxUploadSize" value="25474565" />
+	</bean>
+
+	<!-- 信息转换器 -->
+	<!-- springmvc默认使用MappingJackson2HttpMessageConverter转换Json格式的数据 -->
+	<!-- 如果需要自定义HttpMessageConverter接收json格式数据，则需要进行如下配置 -->
+	<!-- <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"> 
+		<property name="messageConverters"> <list> <ref bean="mappingJacksonHttpMessageConverter" 
+		/> </list> </property> </bean> <bean id="mappingJacksonHttpMessageConverter" 
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"> 
+		<property name="supportedMediaTypes"> <list> <value>text/html;charset=UTF-8</value> 
+		</list> </property> </bean> -->
+
+	<!-- 拦截器配置 -->
+<!-- 	<mvc:interceptors> 
+		<bean class="cn.sitedev.interceptor.LoginInterceptor"></bean>
+	</mvc:interceptors> -->
+</beans>

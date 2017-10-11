@@ -1,0 +1,75 @@
+<HTML>
+<HEAD>
+<META http-equiv=Content-Type CONTENT="text/html; charset=utf-8" />
+<TITLE>Itcast OA</TITLE>
+<LINK HREF="../style/blue/login.css" type=text/css rel=stylesheet />
+</HEAD>
+
+<BODY LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0
+	CLASS=PageBody>
+	<FORM>
+		<DIV ID="CenterAreaBg">
+			<DIV ID="CenterArea">
+				<DIV ID="LogoImg">工作流系统</DIV>
+				<DIV ID="LoginInfo">
+					<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 width=100%>
+						<TR>
+							<TD width=45 CLASS="Subject"><IMG BORDER="0"
+								SRC="../style/blue/images/login/userId.gif" /></TD>
+							<TD><INPUT SIZE="20" CLASS="TextField" TYPE="text"
+								NAME="loginName" id="loginName" /></TD>
+							<TD ROWSPAN="2" STYLE="padding-left: 10px;"><INPUT
+								TYPE="button" onclick="login()"
+								style="background: url('../style/blue/images/login/userLogin_button.gif') no-repeat; width: 82px; height: 47px;" /></TD>
+						</TR>
+						<TR>
+							<TD CLASS="Subject"><IMG BORDER="0"
+								SRC="../style/blue/images/login/password.gif" /></TD>
+							<TD><INPUT SIZE="20" CLASS="TextField" TYPE="password"
+								NAME="password" id="password" /></TD>
+						</TR>
+						<TR id="loginMsg">
+
+						</TR>
+					</TABLE>
+				</DIV>
+				<DIV ID="CopyRight">
+					<A HREF="javascript:void(0)">&copy; 2010 版权所有 itcast</A>
+				</DIV>
+			</DIV>
+		</DIV>
+	</FORM>
+
+	<script type="text/javascript" src="../script/vue.min2.2.0.js"></script>
+	<script type="text/javascript" src="../script/jquery.js""></script>
+	<script type="text/javascript">
+		var loginUrl = "/user/login.do";
+		function login() {
+			var loginName = $("#loginName").val();
+			var password = $("#password").val();
+			$.ajax({
+				type : "post",
+				url : loginUrl,
+				data : {
+					loginName : loginName,
+					password : password
+				},
+				success : function(data) {
+					if (data.success) {
+						location.href = "../index.html";
+					} else {
+						console.log(data.msg)
+						$("#loginMsg").html(
+								'<TD colspan="3" align="center" style="color:red">' + data.msg
+										+ '</TD>');
+					}
+
+				}
+
+			})
+		}
+	</script>
+</BODY>
+
+</HTML>
+
